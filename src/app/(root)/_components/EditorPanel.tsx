@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { RotateCcwIcon, ShareIcon, TypeIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Editor } from '@monaco-editor/react';
+import BrutalistButton from '@/components/BrutalistButton';
 const EditorPanel = () => {
   const [isShareDialogOpen, setIsShareDialogOpen] = useState(false);
   const { language, theme, fontSize, editor, setFontSize, setEditor } = useCodeEditorStore();
@@ -50,8 +51,11 @@ const EditorPanel = () => {
             </div>
           </div>
           <div className="flex items-center gap-3">
+            <BrutalistButton onClick={()=>{
+              console.log("gpt button clicked");
+            }}/>
             {/* Font Size Slider */}
-            <div className="flex items-center gap-3 px-3 py-2 bg-[#1e1e2e] rounded-lg ring-1 ring-white/5">
+            <div className="flex items-center gap-3 px-2 py-2 bg-[#1e1e2e] rounded-lg ring-1 ring-white/5">
               <TypeIcon className="size-4 text-gray-400" />
               <div className="flex items-center gap-3">
                 <input
