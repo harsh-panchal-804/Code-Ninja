@@ -3,19 +3,19 @@
 import { getExecutionResult, useCodeEditorStore } from "@/store/useCodeEditor";
 import { useUser } from "@clerk/nextjs";
 import { useMutation } from "convex/react";
-import { motion } from "framer-motion";
-import { Loader2, Play } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { api } from "../../../../convex/_generated/api";
-
 
 function RunButton() {
   const { user } = useUser();
-  if (!user) return;
+  if (!user) return null;
+
   const saveExecution = useMutation(api.codeExecutions.saveExecution);
   const { isRunning, runCode, executionResult, language } = useCodeEditorStore();
+
   const handleRun = async () => {
     await runCode();
-    const result =getExecutionResult();
+    const result = getExecutionResult();
     if (user && result) {
       await saveExecution({
         language,
@@ -27,41 +27,56 @@ function RunButton() {
   };
 
   return (
-    <motion.button
-      onClick={handleRun}
-      disabled={isRunning}
-      whileHover={{ scale: 1.02 }}
-      whileTap={{ scale: 0.98 }}
-      className={`
-        group relative inline-flex items-center gap-2.5 px-5 py-2.5
-        disabled:cursor-not-allowed
-        focus:outline-none
-      `}
-    >
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-500 rounded-xl opacity-100 transition-opacity group-hover:opacity-90" />
-      <div className="relative flex items-center gap-2.5">
+    <div className="group inline-flex">
+      <button
+        onClick={handleRun}
+        disabled={isRunning}
+        className={`
+          flex items-center font-medium text-[17px] px-[1em] py-[0.6em]
+          pr-[1.2em] pl-[0.8em] text-white rounded-[8px] cursor-pointer
+          transition-all duration-500 ease-[cubic-bezier(0.76,0,0.24,1)]
+          bg-gradient-to-r from-[#100d2a] via-[#302b63] to-[#24243e]
+          disabled:opacity-50 disabled:cursor-not-allowed
+        `}
+      >
         {isRunning ? (
           <>
-            <div className="relative">
-              <Loader2 className="w-4 h-4 animate-spin text-white/70" />
-              <div className="absolute inset-0 blur animate-pulse" />
-            </div>
-            <span className="text-sm font-medium text-white/90">Executing...</span>
+            <Loader2 className="w-5 h-5 animate-spin mr-[6px] text-white" />
+            <span className="transition-transform duration-500 ease-[cubic-bezier(0.76,0,0.24,1)]">
+              Executing...
+            </span>
           </>
         ) : (
           <>
-            <div className="relative flex items-center justify-center w-4 h-4">
-              <Play className="w-4 h-4 text-white/90 transition-transform group-hover:scale-110 group-hover:text-white" />
-            </div>
-            <span className="text-sm font-medium text-white/90 group-hover:text-white">
+            <svg
+              height="24"
+              width="24"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              className={`
+                mr-[6px] transition-transform duration-500 ease-[cubic-bezier(0.76,0,0.24,1)]
+                transform rotate-[30deg] group-hover:translate-x-[5px] group-hover:rotate-[90deg]
+              `}
+            >
+              <path d="M0 0h24v24H0z" fill="none"></path>
+              <path
+                d="M5 13c0-5.088 2.903-9.436 7-11.182C16.097 3.564 19 7.912 19 13c0 .823-.076 1.626-.22 2.403l1.94 1.832a.5.5 0 0 1 .095.603l-2.495 4.575a.5.5 0 0 1-.793.114l-2.234-2.234a1 1 0 0 0-.707-.293H9.414a1 1 0 0 0-.707.293l-2.234 2.234a.5.5 0 0 1-.793-.114l-2.495-4.575a.5.5 0 0 1 .095-.603l1.94-1.832C5.077 14.626 5 13.823 5 13zm1.476 6.696l.817-.817A3 3 0 0 1 9.414 18h5.172a3 3 0 0 1 2.121.879l.817.817.982-1.8-1.1-1.04a2 2 0 0 1-.593-1.82c.124-.664.187-1.345.187-2.036 0-3.87-1.995-7.3-5-8.96C8.995 5.7 7 9.13 7 13c0 .691.063 1.372.187 2.037a2 2 0 0 1-.593 1.82l-1.1 1.039.982 1.8zM12 13a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"
+                fill="currentColor"
+              ></path>
+            </svg>
+            <span
+              className={`
+                transition-transform duration-500 ease-[cubic-bezier(0.76,0,0.24,1)]
+                group-hover:translate-x-[7px]
+              `}
+            >
               Run Code
             </span>
           </>
         )}
-      </div>
-
-    </motion.button>
-  )
+      </button>
+    </div>
+  );
 }
 
-export default RunButton
+export default RunButton;

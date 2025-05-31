@@ -1,40 +1,67 @@
 "use client"
 import { useCodeEditorStore } from '@/store/useCodeEditor';
-import React, { useEffect, useState } from 'react'
-import { defineMonacoThemes, LANGUAGE_CONFIG } from '../_constants';
+import React, { useEffect, useState } from 'react';
+import { defineMonacoThemes, LANGUAGE_CONFIG } from '../_constants'; // Assuming this path is correct for your project
 import Image from 'next/image';
 import { RotateCcwIcon, ShareIcon, TypeIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Editor } from '@monaco-editor/react';
-import BrutalistButton from '@/components/BrutalistButton';
+import BrutalistButton from '@/components/BrutalistButton'; // Assuming this path is correct
+import ChatModal from './ChatModal'; // Import the ChatModal
+
 const EditorPanel = () => {
-  const [isShareDialogOpen, setIsShareDialogOpen] = useState(false);
+  const [isShareDialogOpen, setIsShareDialogOpen] = useState(false); // For your existing share dialog
+  const [isChatModalOpen, setIsChatModalOpen] = useState(false); // State for the AI Chat Modal
   const { language, theme, fontSize, editor, setFontSize, setEditor } = useCodeEditorStore();
+
   useEffect(() => {
     const savedCode = localStorage.getItem(`editor-code-${language}`);
     const newCode = savedCode || LANGUAGE_CONFIG[language].defaultCode;
     if (editor) {
       editor.setValue(newCode);
     }
-
-  }, [language, editor])
+  }, [language, editor]);
 
   useEffect(() => {
     const savedFontSize = localStorage.getItem("editor-font-size");
     if (savedFontSize) setFontSize(parseInt(savedFontSize));
   }, [setFontSize]);
+
+  // Effect to handle body scroll when chat modal is open/closed
+  useEffect(() => {
+    if (isChatModalOpen) {
+      document.body.classList.add('modal-open');
+    } else {
+      document.body.classList.remove('modal-open');
+    }
+    // Cleanup function to remove class if component unmounts while modal is open
+    return () => {
+      document.body.classList.remove('modal-open');
+    };
+  }, [isChatModalOpen]);
+
   const handleRefresh = () => {
     const defaultCode = LANGUAGE_CONFIG[language].defaultCode;
     if (editor) editor.setValue(defaultCode);
     localStorage.removeItem(`editor-code-${language}`);
   };
-   const handleEditorChange = (value: string | undefined) => {
+
+  const handleEditorChange = (value: string | undefined) => {
     if (value) localStorage.setItem(`editor-code-${language}`, value);
   };
+
   const handleFontSizeChange = (newSize: number) => {
     const size = Math.min(Math.max(newSize, 12), 24);
     setFontSize(size);
     localStorage.setItem("editor-font-size", size.toString());
+  };
+
+  const handleOpenChatModal = () => {
+    setIsChatModalOpen(true);
+  };
+
+  const handleCloseChatModal = () => {
+    setIsChatModalOpen(false);
   };
 
   return (
@@ -51,9 +78,9 @@ const EditorPanel = () => {
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <BrutalistButton onClick={()=>{
-              console.log("gpt button clicked");
-            }}/>
+            {/* BrutalistButton now opens the Chat Modal */}
+            <BrutalistButton onClick={handleOpenChatModal} />
+            
             {/* Font Size Slider */}
             <div className="flex items-center gap-3 px-2 py-2 bg-[#1e1e2e] rounded-lg ring-1 ring-white/5">
               <TypeIcon className="size-4 text-gray-400" />
@@ -85,7 +112,7 @@ const EditorPanel = () => {
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              onClick={() => setIsShareDialogOpen(true)}
+              onClick={() => setIsShareDialogOpen(true)} // This is for your existing share dialog
               className="inline-flex items-center gap-2 px-4 py-2 rounded-lg overflow-hidden bg-gradient-to-r
                from-blue-500 to-blue-600 opacity-90 hover:opacity-100 transition-opacity"
             >
@@ -102,7 +129,7 @@ const EditorPanel = () => {
             onChange={handleEditorChange}
             theme={theme}
             beforeMount={defineMonacoThemes}
-            onMount={(editor)=>setEditor(editor)}
+            onMount={(editorInstance) => setEditor(editorInstance)} // Corrected prop name from editor to editorInstance for clarity
             options={{
                 minimap: { enabled: true },
                 fontSize,
@@ -124,14 +151,17 @@ const EditorPanel = () => {
                   horizontalScrollbarSize: 8,
                 },
               }}
-
           />
-
         </div>
-
       </div>
+
+      {/* Render the ChatModal */}
+      <ChatModal isOpen={isChatModalOpen} onClose={handleCloseChatModal} />
+
+      {/* You would also have your ShareDialog component here, if it's controlled by isShareDialogOpen */}
+      {/* Example: <ShareDialog isOpen={isShareDialogOpen} onClose={() => setIsShareDialogOpen(false)} /> */}
     </div>
   )
 }
 
-export default EditorPanel
+export default EditorPanel;
