@@ -8,6 +8,7 @@ import { motion } from 'framer-motion';
 import { Editor } from '@monaco-editor/react';
 import BrutalistButton from '@/components/BrutalistButton'; // Assuming this path is correct
 import ChatModal from './ChatModal'; // Import the ChatModal
+import ShareSnippetDialog from './ShareSnippetDialog';
 
 const EditorPanel = () => {
   const [isShareDialogOpen, setIsShareDialogOpen] = useState(false); // For your existing share dialog
@@ -158,8 +159,7 @@ const EditorPanel = () => {
       {/* Render the ChatModal */}
       <ChatModal isOpen={isChatModalOpen} onClose={handleCloseChatModal} />
 
-      {/* You would also have your ShareDialog component here, if it's controlled by isShareDialogOpen */}
-      {/* Example: <ShareDialog isOpen={isShareDialogOpen} onClose={() => setIsShareDialogOpen(false)} /> */}
+      {isShareDialogOpen && <ShareSnippetDialog onClose={() => setIsShareDialogOpen(false)} />}
     </div>
   )
 }

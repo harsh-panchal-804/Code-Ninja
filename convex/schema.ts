@@ -25,14 +25,14 @@ export default defineSchema({
         code: v.string(),
         userName: v.string(),
     }).index("by_user_id",["userId"]),
-    snipperComments:defineTable({
+    snippetComments:defineTable({
         snippetId: v.id("snippets"),
         userId: v.string(),
         userName: v.string(),
         content: v.string(),
     }).index("by_snippet_id",["snippetId"]),
     stars:defineTable({
-        userId: v.id("users"),
+       userId: v.string(),
         snippetId: v.id("snippets"),
     })
     .index("by_user_id",["userId"])

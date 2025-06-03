@@ -16,7 +16,7 @@ export const syncUser = mutation({
                 userId: args.userId,
                 email: args.email,
                 name: args.name,
-                isPro: false,
+                isPro: true,
             });
         }
     }
