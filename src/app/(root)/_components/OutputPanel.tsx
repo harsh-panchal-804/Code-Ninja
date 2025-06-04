@@ -31,9 +31,9 @@ const OutputPanel = () => {
         </div>
 
         <div className="flex items-center gap-4">
-         
-            <RunButton />
-        
+
+          <RunButton />
+
           <LanguageSelector hasAccess={true} />
 
           <button

@@ -1,7 +1,7 @@
 import { currentUser } from "@clerk/nextjs/server"
 import { ConvexHttpClient } from "convex/browser";
 import { api } from "../../../../convex/_generated/api";
-import { Blocks, Code2, Sparkles } from "lucide-react";
+import { Blocks, Code2, LogIn, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
 import ThemeSelector from "./ThemeSelector";
@@ -15,17 +15,18 @@ async function Header() {
     const convex = new ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
     const user = await currentUser();
     if (!user) {
-        return (
-            <div className="relative z-10">
-                {/* maybe show a login button here */}
-                <SignedOut>
-                   <SignInButton>
-                       Sign In
-                   </SignInButton>
-                </SignedOut>
-            </div>
-        );
-    }
+  return (
+    <div className="w-full px-4 py-2 bg-yellow-100 border border-yellow-300 text-yellow-800 text-sm flex items-center justify-center shadow-sm">
+      <SignedOut>
+        <SignInButton mode="modal">
+          <button className="underline hover:text-yellow-900 transition">
+            You need to sign in to execute codes.
+          </button>
+        </SignInButton>
+      </SignedOut>
+    </div>
+  );
+}
     const convexUser = await convex.query(api.users.getUser, {
         userId: user?.id || "",
     });

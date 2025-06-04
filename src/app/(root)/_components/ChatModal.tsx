@@ -45,8 +45,9 @@ const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose }) => {
     setIsMounted(true);
     const initialX = (window.innerWidth - DEFAULT_WIDTH) / 2;
     const initialY = (window.innerHeight - DEFAULT_HEIGHT) / 2;
-    setPosition({ x: initialX + 280, y: initialY - 150 });
+    setPosition({ x: initialX, y: initialY });
   }, []);
+
 
   // Auto-scroll within modal container
   useEffect(() => {
