@@ -55,7 +55,7 @@ function NavigationHeader() {
 
           {/* right rection */}
           <div className="flex items-center gap-4">
-            <SignedOut>
+            {/* <SignedOut>
               <Link
                 href="/pricing"
                 className="flex items-center gap-2 px-4 py-1.5 rounded-lg border border-amber-500/20
@@ -68,7 +68,7 @@ function NavigationHeader() {
                   Pro
                 </span>
               </Link>
-            </SignedOut>
+            </SignedOut> */}
 
             {/* profile button */}
             <HeaderProfileBtn />
