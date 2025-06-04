@@ -10,7 +10,8 @@ An online code editor and compiler built with Next.js, using Monaco Editor for a
 **[Deployed on Vercel](https://code-ninja-sand.vercel.app/)**
 
 
-**[Demo Video (takes sometime to load or goto demo_video)](./demo_video/code-ninja-video.gif)**  
+Watch the demo (It takes some time to load or go to the demo_video folder ) ->
+![Demo GIF](demo_video/code-ninja-video.gif)
 
 
 
