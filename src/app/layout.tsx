@@ -30,7 +30,7 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider
-    clerkJSUrl="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@4.62.1/dist/clerk.browser.js"
+
     >
     
     <html lang="en">
