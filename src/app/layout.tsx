@@ -29,7 +29,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
+    <ClerkProvider
+    clerkJSUrl="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@4.62.1/dist/clerk.browser.js"
+    >
     
     <html lang="en">
       <head>
